@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="jquery.js"></script>
+<script>
+$(document).ready(function(){
+    $("button").click(function(){
+		var number = $('input#number').val();
+		var message = $('input#message').val();
+    $.ajax({url:"http://localhost/api/submit.php", type: "POST", data: "message=" + message + "&number=" + number,  success:function(result){
+		 $("div").html(result);
+
+    }});
+  });
+});
+</script>
+</head>	
+<body>
+
+<div><h2>Let AJAX change this text</h2></div>
+<button>send</button>
+		<form id="submit" >
+		<input id="message" name="message" type="text" />
+		<input id="number" name="number" type="text" />
+
+		</form>
+
+</body>
+</html>
+
