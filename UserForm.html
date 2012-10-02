@@ -1,0 +1,31 @@
+<html>
+<head>
+    <script src = "jquery.js"></script>
+</head>
+<body>
+<form id = "submit" method = "post">
+    <label for = "number">To :</label></br>
+    <input id = "number" name = "number" type = "text" /></br>
+    <label for = "message">Message :</label></br>
+    <input id = "message" name = "message" type = "text" />
+    <input type = "button" value = "send" id = "send"/>
+</form>
+<script>
+    $("#send").click(function(event)
+    {
+        var number = $('input#number').val();
+        var message = $('input#message').val();
+        $.ajax({
+            url : "http://localhost/api/second.php",
+            type : "POST",
+            cache : false, 
+            data : "message=" + message + "&number=" + number ,
+            success : function(data){
+            alert(data);
+	        }
+        });
+    });
+</script>
+</body>
+</html>
+
