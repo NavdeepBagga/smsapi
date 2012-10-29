@@ -3,9 +3,9 @@ include 'db.php';
 if ($ldapConn) { 
     $ldapBind=ldap_bind($ldapConn, $ldapLogin, $ldapPass);     
     if($_POST){
-        // generate activation key
-        $activation=md5($_POST['username']);
-        // insert user input values
+		// generate activation key
+	    $activation=md5($_POST['username']);
+	    // insert user input values
         $insertvalue= mysql_query("INSERT INTO users (firstname, lastname, email, password, gender, dob, phoneno, activation)
         VALUES ('$_POST[firstname]', '$_POST[lastname]','$_POST[username]', '$_POST[password]', '$_POST[gender]', '$_POST[birthdate]', '$_POST[phone]', '$activation' )");
         if($insertvalue) {
@@ -19,14 +19,14 @@ if ($ldapConn) {
             }
             // ldap add    
             $info["uid"] = $userid;
-            $info["sn"] = "singh";
+            $info["sn"] = $activation;
             $info["userpassword"] = $userpasswd;
             $info["objectclass"] = "inetOrgPerson";
             $ldapAdd = ldap_add($ldapConn, "cn=$username,$ldapDomain", $info);
             // send mail
             $to      = $_POST['username'];
             $subject = 'php';
-            $message = 'Please click the link below to activate yourself on using smsapi.http://localhost/api/register.php?email=$to&key=$activkey';
+            $message = 'Please click the link below to activate yourself on using smsapi.http://localhost/api/register.php?email='.$to.'&key='.$activkey;
             $headers = 'From: gottarocknow@gmail.com';
             mail($to, $subject, $message);
             echo "Thank you for registering! A confirmation email has been sent to " . $_POST['username'] . " Please click on the Activation Link to Activate your account";
