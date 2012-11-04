@@ -15,14 +15,28 @@ if ($ldapConn) {
             $userid=$info[$x]['uid'][0];
         }
         if($info["count"] == 1) {
-            $query="INSERT INTO sms(uid,message,number) VALUES ('$userid','$_POST[message]','$_POST[number]')";
-            mysql_query($query) or die (mysql_error());
-            if($query) {
-            echo"message successfully sent";
+            $check = mysql_query("SELECT smsaccount FROM users WHERE id='$userid'");
+            while($account = mysql_fetch_array($check))
+            {
+                if($account['smsaccount'] == 0)
+                {
+                    echo "you left with empty message account";
+                }
+                else
+                {
+                    $query="INSERT INTO sms(uid,message,number) VALUES ('$userid','$_POST[message]','$_POST[number]')";
+                    mysql_query($query) or die (mysql_error());
+                    $current = $account['smsaccount'] - 1;
+                    $minus = mysql_query("UPDATE users SET smsaccount='$current' WHERE id='$userid'");
+                    if($query) {
+                        echo"message successfully sent";
+                    }	
+				}
             }
+            
 	    }
 	    else {
-		    echo "You are not authenticated.";
+		    echo "You have no account please register";
 		} 
     }
 }
