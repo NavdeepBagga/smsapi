@@ -1,35 +1,37 @@
 <html>
 <head>
 	<script language="javascript" type="text/javascript">
-function limitText(limitField, limitCount, limitNum) {
+    function limitText(limitField, limitCount, limitNum) {
 	if (limitField.value.length > limitNum) {
 		limitField.value = limitField.value.substring(0, limitNum);
 	} else {
 		limitCount.value = limitNum - limitField.value.length;
 	}
-}
-</script>
+    }
+    </script>
     <script src = "jquery.js"></script>
 </head>
 <body>
-<form id = "submit" method = "post">
+<form name="myform" id = "submit" method = "post" >
     <label for = "number">Enter Number :</label></br>
-    <input id = "number" name = "number" type = "tel" /></br>
+    <input id = "number" name = "number" type = "text" /></br>
     <label for = "message">Enter Message :</label></br>
-    <textarea name="message" rows="10" cols="40"
+    <textarea id= "message" name="message" rows="10" cols="40"
     onKeyDown="limitText(this.form.message,this.form.countdown,155);" 
     onKeyUp="limitText(this.form.message,this.form.countdown,155);">
     </textarea></br>
     <font size="1">(Maximum characters: 155)<br>
-You have <input readonly type="text" name="countdown" size="3" value="155"> characters left.</font>
-</form>
+    You have 
+    <input readonly type="text" name="countdown" size="3" value="155">
+    characters left.
+    </font>
     <input type = "button" value = "Send SMS" id = "send"/>
 </form>
 <script>
     $("#send").click(function(event)
     {
         var number = $('input#number').val();
-        var message = $('input#message').val();
+        var message = $('textarea#message').val();
         var api = "d8efb07b568dbeb66402542e8fa1aec8";
         $.ajax({
             url : "http://localhost/api/myapp.php",
@@ -40,6 +42,7 @@ You have <input readonly type="text" name="countdown" size="3" value="155"> char
             alert(data);
 	        }
         });
+	    
     });
 </script>
 </body>

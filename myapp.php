@@ -1,5 +1,10 @@
 <?php
 include 'db.php';
+if($_POST['number'] == null)
+{
+	echo"please enter atleast one recipient";
+}
+else {
 if ($ldapConn) { 
     $ldapBind=ldap_bind($ldapConn, $ldapLogin, $ldapPass);
     if($_POST['api']) {
@@ -24,7 +29,7 @@ if ($ldapConn) {
                 }
                 else
                 {
-                    $query="INSERT INTO sms(uid,message,number) VALUES ('$userid','$_POST[message]','$_POST[number]')";
+                    $query="INSERT INTO send_sms(momt,sender,receiver,msgdata,boxc_id) VALUES ('MT','$userid','$_POST[number]','$_POST[message]','mysqlbox')";
                     mysql_query($query) or die (mysql_error());
                     $current = $account['smsaccount'] - 1;
                     $minus = mysql_query("UPDATE users SET smsaccount='$current' WHERE id='$userid'");
@@ -39,5 +44,6 @@ if ($ldapConn) {
 		    echo "You have no account please register";
 		} 
     }
+}
 }
 ?>
