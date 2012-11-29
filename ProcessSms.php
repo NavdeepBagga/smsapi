@@ -2,9 +2,19 @@
 
 class Sms_Processor
 {	
-    function validNumber()
+    function validNumber($number)
     {
-        
+        $str= strlen($number);
+        if($number == '') {
+            echo "Add atleast one recipient";
+	}
+	elseif($str != 10) {
+            echo "You enter wrong mobile number.";
+	}
+	else {
+            $mobNums = explode(",",$number);
+	}
+    return $mobNums; 
     }
     function authUser($apikey,$ldapConn,$ldapDomain)
     {
@@ -33,11 +43,13 @@ class Sms_Processor
             {
                 echo "You are left with empty message account";
 	        }
-	        else {
-                $query="INSERT INTO $sendTable(momt,sender,receiver,msgdata,boxc_id) VALUES ('MT','$userid','$number','$message','mysqlbox')";
+	    else {
+		foreach($number as $numbers){    
+                $query="INSERT INTO $sendTable(momt,sender,receiver,msgdata,boxc_id) VALUES ('MT','$userid','$numbers','$message','mysqlbox')";
 		        mysql_query($query) or die (mysql_error());
 		        $current = $account['smsaccount'] - 1;	
-		        $minus = mysql_query("UPDATE $usersTable SET $select='$current' WHERE id='$userid'");
+			$minus = mysql_query("UPDATE $usersTable SET $select='$current' WHERE id='$userid'");
+		}
                 if($query) {
                     echo "message successfully sent";
 		        }
