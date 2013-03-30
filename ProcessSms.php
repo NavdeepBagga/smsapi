@@ -31,31 +31,31 @@ class Sms_Processor
         return $user;
 	    }
 	    else {
-            print_r("register urself");
+        echo "register urself";
 	    }
     }
-    function checkSms($select,$usersTable,$userid,$sendTable,$number,$message)
+    function checkSms($select1,$select2,$usersTable,$userid,$sendTable,$number,$message,$sender)
     {
-        $check = mysql_query("SELECT $select FROM $usersTable WHERE id='$userid'");
+
+      $check = mysql_query("SELECT $select1,$select2 FROM $usersTable WHERE ID='$userid'");
         while($account = mysql_fetch_array($check))
         {
-            if($account['smsaccount'] == 0)
+            if($account[$select1] == 0)
             {
                 echo "You are left with empty message account";
 	        }
 	    else {
-		foreach($number as $numbers){    
-                $query="INSERT INTO $sendTable(momt,sender,receiver,msgdata,boxc_id) VALUES ('MT','$userid','$numbers','$message','mysqlbox')";
+		 foreach($number as $numbers){   
+              $query="INSERT INTO $sendTable(momt,sender,receiver,msgdata,account) VALUES ('MT','$sender','$numbers','$message','$account[ID]')";
 		        mysql_query($query) or die (mysql_error());
-		        $current = $account['smsaccount'] - 1;	
-			$minus = mysql_query("UPDATE $usersTable SET $select='$current' WHERE id='$userid'");
+		        $current = $account['user_status'] - 1;	
+			$minus = mysql_query("UPDATE $usersTable SET $select1='$current' WHERE id='$account[ID]'");
 		}
                 if($query) {
                     echo "message successfully sent";
-		        }
-		    }
+		        }		    } 
         }
-    }
+    } 
 }
 
 ?>
